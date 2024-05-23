@@ -90,7 +90,7 @@ export const Header = forwardRef<
           <ThemeToggle />
         </div>
         <div className="hidden min-[416px]:contents">
-          <Button href="#">Sign in</Button>
+          <Button href="#"> MetaID DApps</Button>
         </div>
       </div>
     </motion.div>

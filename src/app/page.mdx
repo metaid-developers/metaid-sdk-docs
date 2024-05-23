@@ -3,41 +3,67 @@ import { Resources } from '@/components/Resources'
 import { HeroPattern } from '@/components/HeroPattern'
 
 export const metadata = {
-  title: 'API Documentation',
+  title: 'MetaID SDK Documentation',
   description:
-    'Learn everything there is to know about the Protocol API and integrate Protocol into your product.',
+    'Grasp the MetaID SDK and API documentation to access contacts, conversations, group messages, and more and seamlessly integrate your product into the workflows of dozens of devoted MetaID users.',
 }
-
-export const sections = [
-  { title: 'Guides', id: 'guides' },
-  { title: 'Resources', id: 'resources' },
-]
 
 <HeroPattern />
 
-# API Documentation
+# MetaID SDK Documentation
 
-Use the Protocol API to access contacts, conversations, group messages, and more and seamlessly integrate your product into the workflows of dozens of devoted Protocol users. {{ className: 'lead' }}
+Use MetaID js SDK to easily integrate MetaID into your application. Create real data that truly belongs to the user and is portable across applications. {{ className: 'lead' }}
 
 <div className="not-prose mb-16 mt-6 flex gap-3">
   <Button href="/quickstart" arrow="right">
     <>Quickstart</>
   </Button>
-  <Button href="/sdks" variant="outline">
+  {/* <Button href="/sdks" variant="outline">
     <>Explore SDKs</>
-  </Button>
+  </Button> */}
 </div>
 
-## Getting started {{ anchor: false }}
+## What is this SDK for?
 
-To get started, create a new application in your [developer settings](#), then read about how to make requests for the resources you need to access using our HTTP APIs or dedicated client SDKs. When your integration is ready to go live, publish it to our [integrations directory](#) to reach the Protocol community. {{ className: 'lead' }}
+The MetaID SDK provides a set of standard specifications and method tools for generating and processing underlying blockchain data that follows [MetaID protocol](https://docs.metaid.io/) (specifically referring to chains that comply with the UTXO standard, currently supporting the BTC chain).
 
 <div className="not-prose">
-  <Button href="/sdks" variant="text" arrow="right">
-    <>Get your API key</>
+  <Button
+    href="https://docs.metaid.io/"
+    variant="text"
+    arrow="right"
+    target="_blank"
+  >
+    <>Check out MetaID protocol</>
   </Button>
 </div>
 
-<Guides />
+## Core Concepts
 
-<Resources />
+There are two core concepts in the MetaID SDK: `Connector` and `Entity`.
+
+### Connector
+
+A `Connector` is used for the authentication and management of identity information, maintain and syncronize connection status with underlying wallets.
+
+### Entity
+
+An `Entity` is a term used in the application layer.
+
+It is used to manage resources of a specific data type. From a programming perspective, when you create a new entity instance, you can access its properties and use a series of executable methods provided for data storage and modification on the chain. You can understand each type of Entity as corresponding to the PATH part in the MetaID Specification.
+
+An `Entity` is like a model from an ORM (Object-Relational Mapping), while an instance of an `Entity` is like an object of a model.
+
+## What about PINs?
+
+[MetaID v2 protocol](https://docs.metaid.io/) introduces the brilliant concept of PINs. A PIN represents one piece of data with uniqueness. A PIN can be transferred, verified or sold.
+
+However, the concept of PINs is still kinda low-level. It requires developers to have a basic understanding of the underlying blockchain technology. Meanwhile this MetaID SDK, as a data-modeling layer, is designed to help developers to easily interact with the blockchain and manage PINs.
+
+So we choose to encapsulate the concept of PINs and hide it from DApp developers. Developers can easily utilize the data model (which we called `Entity`) we provide to manage their data without worrying about the underlying mess.
+
+If you prefer to manage PINs manually, you can use our `createPin()` method to meet your needs. {{ className: 'lead' }}
+
+{/* <Guides /> */}
+
+{/* <Resources /> */}

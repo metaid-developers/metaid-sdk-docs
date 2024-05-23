@@ -1,98 +1,65 @@
 export const metadata = {
   title: 'Quickstart',
   description:
-    'This guide will get you all set up and ready to use the Protocol API. We’ll cover how to get started an API client and how to make your first API request.',
+    'This guide will get you all set up and ready to use the MetaID SDK. We will cover how to install the SDK, connect to the wallet, fetch onchain data, and create your own data with the SDK.',
 }
 
 # Quickstart
 
-This guide will get you all set up and ready to use the Protocol API. We'll cover how to get started using one of our API clients and how to make your first API request. We'll also look at where to go next to find all the information you need to take full advantage of our powerful REST API. {{ className: 'lead' }}
+This guide will get you all set up and ready to use the MetaID SDK. We will cover how to install the SDK, connect to the wallet, fetch onchain data, and create your own data with the SDK. {{ className: 'lead' }}
 
 <Note>
-  Before you can make requests to the Protocol API, you will need to grab your
-  API key from your dashboard. You find it under [Settings &raquo; API](#).
+
+A basic understanding of [TypeScript](https://www.typescriptlang.org/) is required to use this SDK.
+Let's get the code running! 🚀
+
 </Note>
 
-## Choose your client
+## Installation
 
-Before making your first API request, you need to pick which API client you will use. In addition to good ol' cURL HTTP requests, Protocol offers clients for JavaScript, Python, and PHP. In the following example, you can see how to install each client.
+Choose your preferred JavaScript package manager to install the MetaID SDK package.
 
 <CodeGroup>
 
-```bash {{ title: 'cURL' }}
-# cURL is most likely already installed on your machine
-curl --version
+```bash {{ title: 'NPM' }}
+npm install @metaid/metaid
 ```
 
-```bash {{ language: 'js' }}
-# Install the Protocol JavaScript SDK
-npm install @example/protocol-api --save
+```bash {{ title: 'Yarn' }}
+yarn add @metaid/metaid
 ```
 
-```bash {{ language: 'python' }}
-# Install the Protocol Python SDK
-pip install protocol_api
+```bash {{ title: 'PNPM' }}
+pnpm add @metaid/metaid
 ```
 
-```bash {{ language: 'php' }}
-# Install the Protocol PHP SDK
-composer require protocol/sdk
+```bash {{ title: 'Bun' }}
+bun install @metaid/metaid
 ```
 
 </CodeGroup>
 
 <div className="not-prose">
-  <Button href="/sdks" variant="text" arrow="right">
-    <>Check out our list of first-party SDKs</>
+  <Button
+    href="https://www.npmjs.com/package/@metaid/metaid"
+    variant="text"
+    arrow="right"
+    target="_blank"
+  >
+    <>Check out the package on NPM</>
   </Button>
 </div>
 
-## Making your first API request
+## Configuration
 
-After picking your preferred client, you are ready to make your first call to the Protocol API. Below, you can see how to send a GET request to the Conversations endpoint to get a list of all your conversations. In the cURL example, results are limited to ten conversations, the default page length for each client.
+No configuration is needed. The MetaID SDK is ready to use out of the box. 🎉
 
-<CodeGroup tag="GET" label="/v1/conversations">
-
-```bash {{ title: 'cURL' }}
-curl -G https://api.protocol.chat/v1/conversations \
-  -H "Authorization: Bearer {token}" \
-  -d limit=10
-```
-
-```js
-import ApiClient from '@example/protocol-api'
-
-const client = new ApiClient(token)
-
-await client.conversations.list()
-```
-
-```python
-from protocol_api import ApiClient
-
-client = ApiClient(token)
-
-client.conversations.list()
-```
-
-```php
-$client = new \Protocol\ApiClient($token);
-
-$client->conversations->list();
-```
-
-</CodeGroup>
-
-<div className="not-prose">
-  <Button href="/conversations" variant="text" arrow="right">
-    <>Read the docs for the Conversations endpoint</>
-  </Button>
-</div>
+## Let's build an onchain Twitter
 
 ## What's next?
 
-Great, you're now set up with an API client and have made your first request to the API. Here are a few links that might be handy as you venture further into the Protocol API:
+Great, you've successfully created your first MetaID DApp! Here are a few useful links to help you as you explore the MetaID SDK further.
 
-- [Grab your API key from the Protocol dashboard](#)
-- [Check out the Conversations endpoint](/conversations)
-- [Learn about the different error messages in Protocol](/errors)
+- [Check out these amazing projects built with MetaID!](https://github.com/metaid-developers/awesome-metaid)
+- [Learn more about the fundamental concepts of the MetaID SDK](/entity)
+- [Learn about the various errors in the MetaID SDK and how to handle them effectively](/errors)

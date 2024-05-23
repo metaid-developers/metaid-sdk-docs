@@ -1,0 +1,301 @@
+export const metadata = {
+  title: 'Entity',
+  description:
+    'On this page, we will dive into what entities are and how you can use them to manage your data programmatically.',
+}
+
+# Entity
+
+An entity is a controller class to operate on a specific resource. Once a class entity is created through a [connector](/connector), you can access a series of properties and methods provided by that class entity. {{ className: 'lead' }}
+
+An entity contains CRUD-like methods to interact with the underlying blockchain data. {{ className: 'lead' }}
+
+Currently, the MetaID SDK provides common basic entity calls based on the on-chain Twitter-like example application [BitBuzz](https://www.bitbuzz.io/), including `buzzEntity`, `fileEntity`, `likeEntity`. If developers have their own customization needs, they can create their own data protocol on [the MetaProtocols website](https://www.metaprotocols.com/), and the MetaID SDK will automatically create relevant entities for that protocol. {{ className: 'lead' }}
+
+In the following sections, we will use a `buzzEntity` as an example to demonstrate how to use entities. It is basically the same as a tweet model in a Twitter-like application.
+
+## The entity class
+
+The entity class contains the following properties and methods:
+
+### Properties
+
+<Properties>
+
+<Property name="name" type="string">
+  Unique name of the entity.
+</Property>
+<Property name="schema" type="EntitySchema">
+  The underlying schema in JSON format defining the data structure of the
+  entity. It's like a table schema in a database.
+</Property>
+</Properties>
+
+---
+
+## list() {{ tag: 'ASYNC', label: 'List records of the entity' }}
+
+<Row>
+  <Col>
+
+    This method allows you to fetch all records complying with this entity schema with pagination.
+
+    For example, if you're using a `buzzEntity`, you can list all buzzes that have been created and posted onchain.
+
+
+    ### Required parameters
+
+    <Properties>
+      <Property name="page" type="integer">
+        The page number to fetch.
+      </Property>
+      <Property name="limit" type="integer">
+        Limit the number of records returned per page.
+      </Property>
+    </Properties>
+
+
+    ### Optional parameters
+
+    <Properties>
+      <Property name="network" type="string">
+        An optional parameter to specify the network to fetch records from. If not provided, the network maintained in the connector will be used.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Call" tag="ASYNC" label="list()">
+
+    ```ts
+    // Create a buzzEntity with connector.use().
+    const Buzz: Entity = connector.use('buzz')
+
+    const buzzList = await Buzz.list()
+
+    // specify the page and limit
+    const buzzList = await Buzz.list({ page: 2, limit: 20 })
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Return' }}
+    {
+      "status": "success",
+      "page": 1,
+      "limit": 10,
+      "data": [
+        {
+          "txid": "SIuAFUNKdSYHZF2w",
+          "body": "xgQQXg3hrtjh7AvZ",
+          "createdAt": {
+            "id": "WAz8eIbvDR60rouK",
+            "username": "KevinMcCallister",
+            "phone_number": "1-800-759-3000",
+            "avatar_url": "https://assets.protocol.chat/avatars/buzzboy.jpg",
+            "last_active_at": 705103200,
+            "created_at": 692233200
+          },
+          "user": "It’s a nice night for a neck injury.",
+        },
+        {
+          // ..
+        }
+      ]
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## one() {{ tag: 'ASYNC', label: 'Get a specific record of the entity' }}
+
+<Row>
+  <Col>
+
+    This method fetch one record with the entity schema by providing the record id.
+
+    ### Required parameters
+
+    <Properties>
+      <Property name="id" type="string">
+        Unique identifier for the record.
+      </Property>
+    </Properties>
+
+    ### Optional parameters
+
+    <Properties>
+      <Property name="network" type="string">
+        An optional parameter to specify the network to fetch records from. If not provided, the network maintained in the connector will be used.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Call" tag="ASYNC" label="one()">
+
+    ```ts
+    // get one buzz record by id
+    const oneBuzz = await Buzz.one({ id: 'SIuAFUNKdSYHZF2w' })
+
+    // get latest buzz record
+    const latestBuzz = await Buzz.one()
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Return' }}
+    {
+      "status": "success",
+      "page": 1,
+      "limit": 10,
+      "data": [
+        {
+          "txid": "SIuAFUNKdSYHZF2w",
+          "body": "xgQQXg3hrtjh7AvZ",
+          "createdAt": {
+            "id": "WAz8eIbvDR60rouK",
+            "username": "KevinMcCallister",
+            "phone_number": "1-800-759-3000",
+            "avatar_url": "https://assets.protocol.chat/avatars/buzzboy.jpg",
+            "last_active_at": 705103200,
+            "created_at": 692233200
+          },
+          "user": "It’s a nice night for a neck injury.",
+        },
+        {
+          // ..
+        }
+      ]
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## total() {{ tag: 'ASYNC', label: 'Get the total number of records' }}
+
+<Row>
+  <Col>
+
+    This method fetches the total number of records complying with the entity schema.
+
+    ### Optional parameters
+
+    <Properties>
+      <Property name="network" type="string">
+        An optional parameter to specify the network to fetch records from. If not provided, the network maintained in the connector will be used.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Call" tag="ASYNC" label="total()">
+
+    ```ts
+    const buzzTotalCount = await Buzz.total()
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Return' }}
+    {
+      "status": "success",
+      "page": 1,
+      "limit": 10,
+      "data": [
+        {
+          "txid": "SIuAFUNKdSYHZF2w",
+          "body": "xgQQXg3hrtjh7AvZ",
+          "createdAt": {
+            "id": "WAz8eIbvDR60rouK",
+            "username": "KevinMcCallister",
+            "phone_number": "1-800-759-3000",
+            "avatar_url": "https://assets.protocol.chat/avatars/buzzboy.jpg",
+            "last_active_at": 705103200,
+            "created_at": 692233200
+          },
+          "user": "It’s a nice night for a neck injury.",
+        },
+        {
+          // ..
+        }
+      ]
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## create() {{ tag: 'ASYNC', label: 'Create a new record of this entity' }}
+
+<Row>
+  <Col>
+
+    This method creates a new record with the entity schema.
+
+    ### Required parameters
+
+    <Properties>
+      <Property name="id" type="string">
+        Unique identifier for the record.
+      </Property>
+    </Properties>
+
+    ### Optional parameters
+
+    <Properties>
+      <Property name="network" type="string">
+        An optional parameter to specify the network to fetch records from. If not provided, the network maintained in the connector will be used.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Call" tag="ASYNC" label="create()">
+
+    ```ts
+    const buzzTotalCount = await Buzz.total()
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Return' }}
+    {
+      "status": "success",
+      "page": 1,
+      "limit": 10,
+      "data": [
+        {
+          "txid": "SIuAFUNKdSYHZF2w",
+          "body": "xgQQXg3hrtjh7AvZ",
+          "createdAt": {
+            "id": "WAz8eIbvDR60rouK",
+            "username": "KevinMcCallister",
+            "phone_number": "1-800-759-3000",
+            "avatar_url": "https://assets.protocol.chat/avatars/buzzboy.jpg",
+            "last_active_at": 705103200,
+            "created_at": 692233200
+          },
+          "user": "It’s a nice night for a neck injury.",
+        },
+        {
+          // ..
+        }
+      ]
+    }
+    ```
+
+  </Col>
+</Row>

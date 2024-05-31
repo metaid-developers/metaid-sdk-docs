@@ -11,7 +11,7 @@ This guide will get you all set up and ready to use the MetaID SDK. We will cove
 <Note>
 
 A basic understanding of [TypeScript](https://www.typescriptlang.org/) is required to use this SDK.
-Let's get the code running! 🚀
+Let's get the code running!&nbsp;&nbsp;🚀
 
 </Note>
 
@@ -55,6 +55,125 @@ bun install @metaid/metaid
 No configuration is needed. The MetaID SDK is ready to use out of the box. 🎉
 
 ## Let's build an onchain Twitter
+
+### Connect to a wallet
+
+The first step is to connect to a wallet. The MetaID SDK currently support [Metalet](https://chrome.google.com/webstore/detail/lbjapbcmmceacocpimbpbidpgmlmoaao) wallet.
+
+```ts {{ title: 'src/index.ts' }}
+import { connect, MetaletWallet } from '@metaid/metaid'
+
+const chain = 'btc'
+const wallet = await MetaletWallet.create({ chain })
+const connector = connect(wallet)
+```
+
+`wallet` is an adapter instance that translates the wallet's API into a common interface that the MetaID SDK can use.
+`connector` is responsible for managing the connection status to the wallet and handling the communication with it.
+
+### Define a schema of the Tweet entity
+
+Before we proceed with the implementation of our DApp, we need to define the schema for a tweet. This schema will determine the structure of each tweet object in our application.
+
+<Note>It's basically equivalent to defining a table schema in a database.</Note>
+
+```ts {{ title: 'src/entity-schemas/tweet.schema.ts' }}
+import { type EntitySchema } from '@metaid/metaid'
+
+const tweetSchema: EntitySchema = {
+  name: 'tweet', // this is how we name our entity
+  path: '/protocols/simpletweet', // this is the path where our entity will be stored on-chain
+  versions: [
+    // we talk about versioning later; right now let's just keep one version
+    {
+      version: 1,
+      body: [
+        // this is where we define the structure of our entity
+        {
+          name: 'content',
+          type: 'string',
+        },
+        {
+          name: 'attachments', // list of foreign keys to attaching file entities
+          type: 'array',
+        },
+      ],
+    },
+  ],
+}
+```
+
+### Use our schema to create an entity
+
+What does an entity represent?
+
+In the context of ORM (Object-Relational Mapping) within database systems, a model typically corresponds to a table in the database. Similarly, within the MetaID SDK, an entity maps to specific on-chain data, allowing it to be constructed based on the schema defined.
+
+What's even cooler is that we gain TypeScript's type safety for our entity data!
+
+That being said, let's create our tweet entity.
+
+```ts {{ title: 'src/index.ts' }}
+import { tweetSchema } from './entity-schemas/tweet.schema'
+
+const Tweet = connector.load(tweetSchema)
+```
+
+Now we have `Tweet` entity, and we can use it to interact with the on-chain data.
+
+### Get a tweet feed
+
+Imagine we have a feed of tweets that we want to display in our DApp. We can fetch the tweets from the on-chain storage.
+
+```ts {{ title: 'src/index.ts' }}
+const tweets = await Tweet.list({ limit: 10 })
+```
+
+OK, we just fetched the latest 10 tweets from BTC network. 🎉 It's crazy how easy it is right?
+
+Now image our user scrolls down and we want to fetch the next 10 tweets.
+
+```ts {{ title: 'src/index.ts' }}
+const nextPage = await Tweet.list({ limit: 10, page: 2 })
+const tweets = [...tweets, ...nextPage]
+```
+
+### Get one tweet and its content
+
+Now let's say we want to display a single tweet with its content.
+
+```ts {{ title: 'src/index.ts' }}
+const tweet = await Tweet.one({ id: 'tweet-id' })
+console.log(tweet.content) // Hello MetaID!
+```
+
+### Post a new tweet
+
+Finally, let's post a new tweet.
+
+```ts {{ title: 'src/index.ts' }}
+const newTweet = await Tweet.create({
+  content: 'Hey Jude, dont make it bad...',
+})
+const idForJude = newTweet.id // This is the id that belongs to Jude.
+```
+
+### Oops! I'd like to delete my tweet
+
+```ts {{ title: 'src/index.ts' }}
+await Tweet.delete({ id: 'tweet-id' })
+```
+
+### What if I want to modify my tweet?
+
+```ts {{ title: 'src/index.ts' }}
+await Tweet.update({
+  id: idForJude,
+  content: 'Hey Jude, dont be afraid...',
+})
+```
+
+That's it! You now know how to utilize `Entity` handler to interact with on-chain data. 🎉
 
 ## What's next?
 
